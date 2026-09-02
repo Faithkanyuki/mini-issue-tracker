@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { SignJWT, jwtVerify } from "jose";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 const TOKEN_EXPIRY = "7d";
@@ -7,6 +7,8 @@ const TOKEN_EXPIRY = "7d";
 if (!JWT_SECRET) {
   throw new Error("JWT_SECRET is not set in environment variables");
 }
+
+const secretKey = new TextEncoder().encode(JWT_SECRET);
 
 export interface TokenPayload {
   userId: string;
@@ -28,14 +30,19 @@ export async function verifyPassword(
 }
 
 // Create a signed JWT for a logged-in user
-export function signToken(payload: TokenPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
+export async function signToken(payload: TokenPayload): Promise<string> {
+  return new SignJWT({ ...payload })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime(TOKEN_EXPIRY)
+    .sign(secretKey);
 }
 
 // Verify a JWT and return its payload, or null if invalid/expired
-export function verifyToken(token: string): TokenPayload | null {
+export async function verifyToken(token: string): Promise<TokenPayload | null> {
   try {
-    return jwt.verify(token, JWT_SECRET) as TokenPayload;
+    const { payload } = await jwtVerify(token, secretKey);
+    return payload as unknown as TokenPayload;
   } catch {
     return null;
   }

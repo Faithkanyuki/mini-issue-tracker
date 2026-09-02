@@ -13,7 +13,7 @@ const createIssueSchema = z.object({
 // GET /api/issues — list only the logged-in user's issues
 export async function GET(req: NextRequest) {
   try {
-    const userId = getCurrentUserId(req);
+    const userId =await getCurrentUserId(req);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 // POST /api/issues — create a new issue owned by the logged-in user
 export async function POST(req: NextRequest) {
   try {
-    const userId = getCurrentUserId(req);
+    const userId = await getCurrentUserId(req);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
