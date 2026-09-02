@@ -1,3 +1,6 @@
+
+[Mini Issue Tracker](screenshots/issue-tracker.png.png)
+[Mini Issue Tracker](screenshots/issue-tracker.png.png)
 # Mini Issue Tracker
 
 ![Mini Issue Tracker screenshot](./screenshots/issue-tracker.png.png)
