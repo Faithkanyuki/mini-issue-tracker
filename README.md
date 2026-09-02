@@ -1,3 +1,5 @@
+
+![Mini Issue Tracker](screenshots/issue-tracker.png)
 # Mini Issue Tracker
 
 A secure, full-stack issue tracker where authenticated users can create and manage their own project issues. Built as a technical assessment for Hasafsec Cyber Solutions Ltd.
